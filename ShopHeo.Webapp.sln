@@ -5,6 +5,10 @@ VisualStudioVersion = 17.10.34916.146
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShopHeo.Webapp", "ShopHeo.Webapp\ShopHeo.Webapp.csproj", "{44781761-99C7-4C89-96C7-CAAC3F93B3E7}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShopHeo.Data", "ShopHeo.Data\ShopHeo.Data.csproj", "{05BBC97C-B683-4871-A875-40FC2CB1028E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShopHeo.Application", "ShopHeo.Application\ShopHeo.Application.csproj", "{2C5A0E98-E692-4681-B99E-AED097E9A831}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +19,14 @@ Global
 		{44781761-99C7-4C89-96C7-CAAC3F93B3E7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{44781761-99C7-4C89-96C7-CAAC3F93B3E7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{44781761-99C7-4C89-96C7-CAAC3F93B3E7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{05BBC97C-B683-4871-A875-40FC2CB1028E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{05BBC97C-B683-4871-A875-40FC2CB1028E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{05BBC97C-B683-4871-A875-40FC2CB1028E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{05BBC97C-B683-4871-A875-40FC2CB1028E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2C5A0E98-E692-4681-B99E-AED097E9A831}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2C5A0E98-E692-4681-B99E-AED097E9A831}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2C5A0E98-E692-4681-B99E-AED097E9A831}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2C5A0E98-E692-4681-B99E-AED097E9A831}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
