@@ -33,4 +33,4 @@
 ## PROFILE
 - https://www.facebook.com/hungmango2
 - DUONG THANH HUNG
-- I Created At Freshman DUY TAN UNIVERSITY
+- I Created At Firt Year DUY TAN UNIVERSITY
