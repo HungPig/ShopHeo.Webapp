@@ -30,4 +30,6 @@
 - References: https://medium.com/swlh/step-by-step-tutorial-to-build-multi-cultural-asp-net-core-web-app-3fac9a960c43
 - Source code: https://github.com/LazZiya/ExpressLocalizationSampleCore3
 
-## My Name Thanh Hung 
+## PROFILE
+- https://www.facebook.com/hungmango2
+- DUONG THANH HUNG
