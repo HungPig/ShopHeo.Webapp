@@ -4,7 +4,7 @@ using System.Text;
 
 namespace ShopHeo.Data.Entities
 {
-    public class Carts
+    public class Cart
     {
         public int Id { get; set; }
         public int ProductID { get; set; }
