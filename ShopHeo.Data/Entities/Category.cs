@@ -12,5 +12,6 @@ namespace ShopHeo.Data.Entities
         public bool IsShowOnHome { get; set; }
         public int? ParentID { get; set; }
         public Status Status { get; set; }
+        public List<ProductInCategory> ProductInCategories { get; set; }
     }
 }

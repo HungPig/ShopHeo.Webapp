@@ -15,5 +15,6 @@ namespace ShopHeo.Data.Entities
         public string ShipEmail { get; set; }
         public string ShipMobilePhone { get; set; }
         public OderStatus Status { get; set; }
+        public List<OrderDetail> OrderDetails { get; set; }
     }
 }
