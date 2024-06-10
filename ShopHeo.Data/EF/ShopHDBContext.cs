@@ -30,8 +30,17 @@ namespace ShopHeo.Data.EF
             modelBuilder.ApplyConfiguration(new AppConfigConfigurations());
             modelBuilder.ApplyConfiguration(new CartConfigurations());
             modelBuilder.ApplyConfiguration(new ProductConfigurations());
-            modelBuilder.ApplyConfiguration(new CategoryConfigurations());
             modelBuilder.ApplyConfiguration(new ProductInCategoryConfigurations());
+            modelBuilder.ApplyConfiguration(new CategoryConfigurations());
+            modelBuilder.ApplyConfiguration(new OrderConfigurations());
+
+            modelBuilder.ApplyConfiguration(new OrderDeltailsConfigurations());
+            modelBuilder.ApplyConfiguration(new CategoryTranslationConfigurations());
+            modelBuilder.ApplyConfiguration(new ContactConfiguations());
+            modelBuilder.ApplyConfiguration(new LanguageConfigurations());
+            modelBuilder.ApplyConfiguration(new ProductTranslationConfigurations());
+            modelBuilder.ApplyConfiguration(new PromotionConfigurations());
+            modelBuilder.ApplyConfiguration(new TransactionConfigurations());
         }
 
     }

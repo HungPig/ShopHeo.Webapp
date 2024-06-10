@@ -7,14 +7,16 @@ namespace ShopHeo.Data.Entities
 {
     public class Transaction
     {
-        public int Id { get; set; }
-        public DateTime TransactionDate { get; set; }
-        public string ExtenalTransactionID { get; set; }
-        public decimal Amount { get; set; }
-        public decimal Fee { get; set; }
-        public string Result {  get; set; }
-        public string Message { get; set; }
-        public ProductTranslation Status { get; set; }
-        public string Provider { get; set; }
+        public int Id { set; get; }
+        public DateTime TransactionDate { set; get; }
+        public string ExternalTransactionId { set; get; }
+        public decimal Amount { set; get; }
+        public decimal Fee { set; get; }
+        public string Result { set; get; }
+        public string Message { set; get; }
+        public TransactionStatus Status { set; get; }
+        public string Provider { set; get; }
+
+        public Guid UserId { get; set; }
     }
 }

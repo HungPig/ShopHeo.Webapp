@@ -15,5 +15,6 @@ namespace ShopHeo.Data.Entities
       public int SeoAlias { get; set; }
       public List<ProductInCategory> ProductInCategories { get; set; }
       public List<OrderDetail> OrderDetails { get; set; }
+      public List<ProductTranslation> ProductTranslations { get; set; }
     }
 }
