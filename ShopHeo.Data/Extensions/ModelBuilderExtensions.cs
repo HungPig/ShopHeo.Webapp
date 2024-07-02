@@ -32,7 +32,7 @@ namespace ShopHeo.Data.Extensions
             modelBuilder.Entity<Category>().HasData(
                 new Category()
                 {
-                    Id = 2,
+                    Id = 1,
                     IsShowOnHome = true,
                     SortOder = 1,
                     ParentID = 2,
@@ -68,10 +68,13 @@ namespace ShopHeo.Data.Extensions
                 {
                     Id = 1,
                     ProductId = 1,
-                    Name = "Ao So Mi Trang Nam",
-                    SeoAlias = "Ao Nam",
-                    SeoDescription = "Sản phẩm áo thời trang nam",
-                    SeoTitle = "Sản phẩm áo thời trang nam"
+                    Name = "Áo sơ mi nam trắng Việt Tiến",
+                    LanguageId = "vi",
+                    SeoAlias = "ao-so-mi-nam-trang-viet-tien",
+                    SeoDescription = "Áo sơ mi nam trắng Việt Tiến",
+                    SeoTitle = "Áo sơ mi nam trắng Việt Tiến",
+                    Details = "Áo sơ mi nam trắng Việt Tiến",
+                    Description = "Áo sơ mi nam trắng Việt Tiến"
                 },
                 new ProductTranslation
                 {
