@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Options;
 using ShopHeo.Data.Configurations;
 using ShopHeo.Data.Entities;
+using ShopHeo.Data.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -27,6 +28,7 @@ namespace ShopHeo.Data.EF
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             //base.OnModelCreating(modelBuilder);
+            //FluentAPI
             modelBuilder.ApplyConfiguration(new AppConfigConfigurations());
             modelBuilder.ApplyConfiguration(new CartConfigurations());
             modelBuilder.ApplyConfiguration(new ProductConfigurations());
@@ -41,6 +43,8 @@ namespace ShopHeo.Data.EF
             modelBuilder.ApplyConfiguration(new ProductTranslationConfigurations());
             modelBuilder.ApplyConfiguration(new PromotionConfigurations());
             modelBuilder.ApplyConfiguration(new TransactionConfigurations());
+            //Data Sending
+            modelBuilder.Seed();
         }
 
     }
