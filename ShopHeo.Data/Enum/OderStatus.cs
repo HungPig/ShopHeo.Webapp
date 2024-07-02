@@ -10,6 +10,6 @@ namespace ShopHeo.Data.Enum
         Confirmed,
         Shipping,
         Success,
-        Canceled
+        Canceled//
     }
 }
