@@ -10,7 +10,7 @@ using ShopHeo.Data.EF;
 namespace ShopHeo.Data.Migrations
 {
     [DbContext(typeof(HShopDBContext))]
-    [Migration("20240628175107_SeedData")]
+    [Migration("20240703145501_SeedData")]
     partial class SeedData
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -38,17 +38,17 @@ namespace ShopHeo.Data.Migrations
                         new
                         {
                             Key = "HomeTitle",
-                            Value = "This is HomePage HshopSolution"
+                            Value = "This is home page of eShopSolution"
                         },
                         new
                         {
                             Key = "HomeKeyword",
-                            Value = "This KeyWord HshopSoltion"
+                            Value = "This is keyword of eShopSolution"
                         },
                         new
                         {
-                            Key = "Home Description",
-                            Value = "This is Description HshopSolution"
+                            Key = "HomeDescription",
+                            Value = "This is description of eShopSolution"
                         });
                 });
 
@@ -105,7 +105,6 @@ namespace ShopHeo.Data.Migrations
                         {
                             Id = 1,
                             IsShowOnHome = true,
-                            ParentID = 2,
                             SortOder = 1,
                             Status = 0
                         },
@@ -263,13 +262,13 @@ namespace ShopHeo.Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "vi-VN",
+                            Id = "vi",
                             IsDefault = true,
                             Name = "Tiếng Việt"
                         },
                         new
                         {
-                            Id = "us-eng",
+                            Id = "en",
                             IsDefault = false,
                             Name = "English"
                         });
@@ -311,7 +310,7 @@ namespace ShopHeo.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("order");
+                    b.ToTable("Order");
                 });
 
             modelBuilder.Entity("ShopHeo.Data.Entities.OrderDetail", b =>
@@ -372,9 +371,9 @@ namespace ShopHeo.Data.Migrations
                         new
                         {
                             Id = 1,
-                            DateCreated = new DateTime(2024, 6, 29, 0, 51, 6, 924, DateTimeKind.Local).AddTicks(9011),
-                            OriginalPrice = 95000m,
-                            Price = 90000m,
+                            DateCreated = new DateTime(2024, 7, 3, 21, 55, 0, 754, DateTimeKind.Local).AddTicks(4066),
+                            OriginalPrice = 100000m,
+                            Price = 200000m,
                             SeoAlias = 0,
                             Stock = 0,
                             ViewCount = 0

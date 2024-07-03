@@ -12,7 +12,7 @@ namespace ShopHeo.Data.Configurations
     {
         public void Configure(EntityTypeBuilder<Order> builder)
         {
-            builder.ToTable("order");
+            builder.ToTable("Order");
             builder.HasKey(x => x.Id);
             builder.Property(x => x.ShipName).IsRequired().HasMaxLength(200);
             builder.Property(x => x.ShipAddress).IsRequired().HasMaxLength(200);
