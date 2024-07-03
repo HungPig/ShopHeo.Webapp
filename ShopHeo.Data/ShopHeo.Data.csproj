@@ -1,8 +1,15 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Migrations\20240628175107_SeedData.cs" />
+    <Compile Remove="Migrations\20240628175107_SeedData.Designer.cs" />
+    <Compile Remove="Migrations\20240703101006_SeedData.cs" />
+    <Compile Remove="Migrations\20240703101006_SeedData.Designer.cs" />
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="3.1.1">
