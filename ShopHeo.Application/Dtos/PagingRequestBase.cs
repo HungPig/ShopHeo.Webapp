@@ -6,7 +6,7 @@ namespace ShopHeo.Application.Dtos
 {
     public class PagingRequestBase
     {
-        public int PageIndex { get; set; }
-        public int PageSize { get; set; }
+        public int pageIndex { get; set; }
+        public int pageSize { get; set; }
     }
 }

@@ -1,4 +1,4 @@
-﻿using ShopHeo.Data.Enum;
+﻿using ShopHeo.Data.Enums;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -13,5 +13,6 @@ namespace ShopHeo.Data.Entities
         public string PhoneNumber { set; get; }
         public string Message { set; get; }
         public Status Status { set; get; }
+
     }
 }

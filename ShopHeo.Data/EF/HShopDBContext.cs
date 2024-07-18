@@ -1,51 +1,67 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using ShopHeo.Data.Configurations;
 using ShopHeo.Data.Entities;
-using ShopHeo.Data.Extensions;
+using ShopHeo.Data.Extentision;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace ShopHeo.Data.EF
 {
-    public class HShopDBContext : DbContext
+    public class HshopDBContext : IdentityDbContext<AppUser,AppRole,Guid>
     {
         public DbSet<Product> Products { get; set; }
         public DbSet<Category> Categories { get; set; }
+        public DbSet<ProductInCategory> ProductInCategories { get; set; }
         public DbSet<Cart> Carts { get; set; }
         public DbSet<CategoryTranslation> CategoryTranslations { get; set; }
-        public DbSet<Contact> Contacts { get; set; }
+        public DbSet<ProductTranslation> ProductTranslations { get; set; }
+        public DbSet<Contact>  Contacts { get; set; }
         public DbSet<Language> Languages { get; set; }
         public DbSet<Order> Orders { get; set; }
         public DbSet<OrderDetail> OrderDetails { get; set; }
-        public DbSet<ProductTranslation> ProductTranslations { get; set; }
-        public DbSet<Promotion> Promotion { get; set; }
-        public DbSet<Transaction> Transaction { get; set; }
-        public HShopDBContext(DbContextOptions options) : base(options)
+        public DbSet<ProductImage> ProductImages { get; set; }
+        public DbSet<Promotion> Promotions { get; set; }
+        public DbSet<Transaction> Transactions { get; set;}
+        public HshopDBContext(DbContextOptions options) : base(options)
         {
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            //base.OnModelCreating(modelBuilder);
-            //FluentAPI
-            modelBuilder.ApplyConfiguration(new AppConfigConfigurations());
-            modelBuilder.ApplyConfiguration(new CartConfigurations());
-            modelBuilder.ApplyConfiguration(new ProductConfigurations());
-            modelBuilder.ApplyConfiguration(new ProductInCategoryConfigurations());
-            modelBuilder.ApplyConfiguration(new CategoryConfigurations());
-            modelBuilder.ApplyConfiguration(new OrderConfigurations());
+            modelBuilder.ApplyConfiguration(new AppConfigConfiguration());
+            modelBuilder.ApplyConfiguration(new AppRoleConfiguration());
+            modelBuilder.ApplyConfiguration(new AppUserConfiguration());
+            modelBuilder.ApplyConfiguration(new CartConfiguration());
+            modelBuilder.ApplyConfiguration(new CategoryConfiguration());
+            modelBuilder.ApplyConfiguration(new CategoryTranslationConfiguration());
+            modelBuilder.ApplyConfiguration(new ContactConfiguration());
 
-            modelBuilder.ApplyConfiguration(new OrderDeltailsConfigurations());
-            modelBuilder.ApplyConfiguration(new CategoryTranslationConfigurations());
-            modelBuilder.ApplyConfiguration(new ContactConfiguations());
-            modelBuilder.ApplyConfiguration(new LanguageConfigurations());
-            modelBuilder.ApplyConfiguration(new ProductTranslationConfigurations());
-            modelBuilder.ApplyConfiguration(new PromotionConfigurations());
-            modelBuilder.ApplyConfiguration(new TransactionConfigurations());
-            //Data Sending
+            modelBuilder.ApplyConfiguration(new LanguageConfiguration());
+            modelBuilder.ApplyConfiguration(new OrderConfiguration());
+            modelBuilder.ApplyConfiguration(new OrderDetailConfiguration());
+            modelBuilder.ApplyConfiguration(new ProductConfiguration());
+            modelBuilder.ApplyConfiguration(new ProductImageConfiguration());
+            modelBuilder.ApplyConfiguration(new ProductInCategoryConfiguration());
+            modelBuilder.ApplyConfiguration(new ProductTranslationConfiguration());
+            modelBuilder.ApplyConfiguration(new PromotionConfiguration());
+            modelBuilder.ApplyConfiguration(new TransactionConfiguration());
+
+            modelBuilder.ApplyConfiguration(new AppUserConfiguration());
+            modelBuilder.ApplyConfiguration(new AppRoleConfiguration());
+
+            modelBuilder.Entity<IdentityUserClaim<Guid>>().ToTable("AppUserClaims");
+            modelBuilder.Entity<IdentityUserRole<Guid>>().ToTable("AppUserRoles").HasKey(x => new { x.UserId, x.RoleId });
+            modelBuilder.Entity<IdentityUserLogin<Guid>>().ToTable("AppUserLogins").HasKey(x => x.UserId);
+
+            modelBuilder.Entity<IdentityRoleClaim<Guid>>().ToTable("AppRoleClaims");
+            modelBuilder.Entity<IdentityUserToken<Guid>>().ToTable("AppUserTokens").HasKey(x => x.UserId);
+
+
+            //Migration Add Seed Data
             modelBuilder.Seed();
-        }
 
+        }
     }
 }

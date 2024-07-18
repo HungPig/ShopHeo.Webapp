@@ -1,20 +1,25 @@
-﻿using ShopHeo.Data.Enum;
+﻿using ShopHeo.Data.Enums;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace ShopHeo.Data.Entities
 {
-    public class Order
+   public class Order
     {
-        public int Id { get; set; }
-        public DateTime OderDate { get; set; }
-        public int UserID { get; set; }
-        public string ShipName { get; set; }
-        public string ShipAddress { get; set; }
-        public string ShipEmail { get; set; }
-        public string ShipMobilePhone { get; set; }
-        public OderStatus Status { get; set; }
+        public int Id { set; get; }
+        public DateTime OrderDate { set; get; }
+        public Guid UserId { set; get; }
+        public string ShipName { set; get; }
+        public string ShipAddress { set; get; }
+        public string ShipEmail { set; get; }
+        public string ShipPhoneNumber { set; get; }
+        public OrderStatus Status { set; get; }
+
         public List<OrderDetail> OrderDetails { get; set; }
+
+        public AppUser AppUser { get; set; }
+
+
     }
 }
