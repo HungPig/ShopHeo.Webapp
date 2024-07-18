@@ -5,13 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Migrations\20240628175107_SeedData.cs" />
-    <Compile Remove="Migrations\20240628175107_SeedData.Designer.cs" />
-    <Compile Remove="Migrations\20240703101006_SeedData.cs" />
-    <Compile Remove="Migrations\20240703101006_SeedData.Designer.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="3.1.1" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="3.1.1">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>

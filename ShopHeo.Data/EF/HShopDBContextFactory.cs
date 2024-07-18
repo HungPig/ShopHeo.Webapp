@@ -8,19 +8,19 @@ using System.Text;
 
 namespace ShopHeo.Data.EF
 {
-    public class HShopDBContextFactory : IDesignTimeDbContextFactory<HShopDBContext>
+    public class HshopDBContextFactory : IDesignTimeDbContextFactory<HshopDBContext>
     {
-        public HShopDBContext CreateDbContext(string[] args)
+        public HshopDBContext CreateDbContext(string[] args)
         {
             IConfigurationRoot configuration = new ConfigurationBuilder()
-                .SetBasePath(Directory.GetCurrentDirectory())
-                .AddJsonFile("appsettings.json")
-                .Build();
+                 .SetBasePath(Directory.GetCurrentDirectory())
+                 .AddJsonFile("appsettings.json")
+                 .Build();
             var ConnectionString = configuration.GetConnectionString("ShopHeoDb");
-            var optionsBuilder = new DbContextOptionsBuilder<HShopDBContext>();
+            var optionsBuilder = new DbContextOptionsBuilder<HshopDBContext>();
             optionsBuilder.UseSqlServer(ConnectionString);
 
-            return new HShopDBContext(optionsBuilder.Options);
+            return new HshopDBContext(optionsBuilder.Options);
         }
     }
 }

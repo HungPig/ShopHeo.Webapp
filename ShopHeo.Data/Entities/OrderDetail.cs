@@ -6,11 +6,15 @@ namespace ShopHeo.Data.Entities
 {
     public class OrderDetail
     {
-        public int OrderID{ get; set; }
-        public int ProductID { get; set; }
-        public string Quantity { get; set; }
-        public int Price { get; set; }
+
+        public int OrderId { set; get; }
+        public int ProductId { set; get; }
+        public int Quantity { set; get; }
+        public decimal Price { set; get; }
+
         public Order Order { get; set; }
+
         public Product Product { get; set; }
+
     }
 }
