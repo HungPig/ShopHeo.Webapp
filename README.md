@@ -10,9 +10,9 @@
 -  Design function - Idea By TEDU
 ## How to configure and run
 - Clone code from Github: git clone https://github.com/HungPig/ShopHeo.Webapp
-- Open solution eShopSolution.sln in Visual Studio 2019
+- Open solution eShopSolution.sln in Visual Studio 2022
 - Set startup project is eShopSolution.Data
-- Change connection string in Appsetting.json in eShopSolution.Data project
+- Change connection string in Appsetting.json in HShopSolution.Data project
 - Open Tools --> Nuget Package Manager -->  Package Manager Console in Visual Studio
 - Run Update-database and Enter.
 - After migrate database successful, set Startup Project is ShopHeo.Webapp
