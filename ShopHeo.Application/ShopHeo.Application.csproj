@@ -6,6 +6,9 @@
 
   <ItemGroup>
     <ProjectReference Include="..\ShopHeo.Data\ShopHeo.Data.csproj" />
+    <ProjectReference Include="..\ShopHeo.Unitities\ShopHeo.Unitities.csproj" />
+    <ProjectReference Include="..\ShopHeo.ViewModels\ShopHeo.ViewModels.csproj" />
+    <ProjectReference Include="..\ShopHeo.Webapp\ShopHeo.Webapp.csproj" />
   </ItemGroup>
 
 </Project>
