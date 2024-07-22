@@ -2,13 +2,13 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace ShopHeo.Application.Catalog.Products.Dtos
+namespace ShopHeo.ViewModels.CataLog.Products.Manager
 {
     public class ProductUpdateRequest
     {
-        public int Id { get; set; } 
+        public int Id { get; set; }
 
-        public string Name { get; set; } 
+        public string Name { get; set; }
         public string Description { set; get; }
         public string Details { set; get; }
         public string SeoDescription { set; get; }

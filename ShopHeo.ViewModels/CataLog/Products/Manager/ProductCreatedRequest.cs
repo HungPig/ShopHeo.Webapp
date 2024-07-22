@@ -1,8 +1,9 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace ShopHeo.Application.Catalog.Products.Dtos
+namespace ShopHeo.ViewModels.CataLog.Products.Manager
 {
     public class ProductCreatedRequest
     {
@@ -16,5 +17,6 @@ namespace ShopHeo.Application.Catalog.Products.Dtos
         public string SeoTitle { set; get; }
         public string SeoAlias { get; set; }
         public string LanguageId { set; get; }
+        public IFormFile ThumbnailFile { get; set; }
     }
 }
