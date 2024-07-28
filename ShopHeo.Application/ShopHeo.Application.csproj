@@ -5,8 +5,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Hosting" Version="2.2.7" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\ShopHeo.Data\ShopHeo.Data.csproj" />
-    <ProjectReference Include="..\ShopHeo.Unitities\ShopHeo.Unitities.csproj" />
+    <ProjectReference Include="..\ShopHeo.Untitiles\ShopHeo.Untitiles.csproj" />
     <ProjectReference Include="..\ShopHeo.ViewModels\ShopHeo.ViewModels.csproj" />
     <ProjectReference Include="..\ShopHeo.Webapp\ShopHeo.Webapp.csproj" />
   </ItemGroup>
