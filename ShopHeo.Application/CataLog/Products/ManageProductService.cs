@@ -3,7 +3,6 @@ using ShopHeo.Application.Catalog.Products.Dtos;
 using ShopHeo.Application.Dtos;
 using ShopHeo.Data.EF;
 using ShopHeo.Data.Entities;
-using ShopHeo.Unitities;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -11,15 +10,23 @@ using System.Threading.Tasks;
 using System.Linq;
 using System.Threading.Tasks.Dataflow;
 using ShopHeo.ViewModels.CataLog.Products.Manager;
+using Microsoft.AspNetCore.Http;
+using System.IO;
+using System.Net.Http.Headers;
+using ShopHeo.Application.Common;
+using ShopHeo.Untitiles.Exceptions;
 
 namespace ShopHeo.Application.Catalog.Products
 {
     public class ManageProductService : IManageProductService
     {
+        private readonly string USER_CONTENT_FOLDER_NAME = "user-content";
+        private readonly IStorageService storageService;
         private readonly HshopDBContext context;
-        public ManageProductService(HshopDBContext context)
+        public ManageProductService(HshopDBContext context, IStorageService storageService)
         {
             this.context = context;
+            this.storageService = storageService;
         }
 
         public async Task AddViewCount(int productId)
@@ -27,7 +34,7 @@ namespace ShopHeo.Application.Catalog.Products
             var product = await this.context.Products.FindAsync(productId);
             if (product == null)
             {
-                throw new ShopHeoException($"Cannot find a product: {productId}");
+                throw new HshopExceptions($"Cannot find a product: {productId}");
             }
             product.ViewCount += 1;
             await this.context.SaveChangesAsync();
@@ -56,6 +63,22 @@ namespace ShopHeo.Application.Catalog.Products
                      }
                 }
             };
+            // save image
+            if(request.ThumbnailFile != null)
+            {
+                product.ProductImages = new List<ProductImage>()
+                {
+                    new ProductImage()
+                    {
+                        Caption = "Thumbnail image",
+                        DateCreated = DateTime.Now,
+                        FileSize = request.ThumbnailFile.Length,
+                        ImagePath = await this.SaveFile(request.ThumbnailFile),
+                        IsDefault = true,
+                        SortOrder = 1
+                    }
+                };
+            }
             this.context.Products.Add(product);
             return await this.context.SaveChangesAsync();
         }
@@ -65,7 +88,7 @@ namespace ShopHeo.Application.Catalog.Products
             var product = await this.context.Products.FindAsync(productId);
             if (product == null)
             {
-                throw new ShopHeoException($"Cannot find a product: {productId}");
+                throw new HshopExceptions($"Cannot find a product: {productId}");
             }
             this.context.Products.Remove(product);
             return await this.context.SaveChangesAsync();
@@ -117,7 +140,7 @@ namespace ShopHeo.Application.Catalog.Products
             var productTranslation = await this.context.ProductTranslations.FirstOrDefaultAsync(x => x.ProductId == request.Id && x.LanguageId == request.LanguageId);
             if (product == null || productTranslation == null)
             {
-                throw new ShopHeoException($"Cannot find a product with id: {request.Id}");
+                throw new HshopExceptions($"Cannot find a product with id: {request.Id}");
             }
             // update product
             productTranslation.Name = request.Name;
@@ -135,7 +158,7 @@ namespace ShopHeo.Application.Catalog.Products
             var product = await this.context.Products.FindAsync(productId);
             if (product == null)
             {
-                throw new ShopHeoException($"Cannot find a product with id: {productId}");
+                throw new HshopExceptions($"Cannot find a product with id: {productId}");
             }
             product.Price = newPrice;
             return await this.context.SaveChangesAsync() > 0;
@@ -147,10 +170,17 @@ namespace ShopHeo.Application.Catalog.Products
             var product = await this.context.Products.FindAsync(productId);
             if (product == null)
             {
-                throw new ShopHeoException($"Cannot find a product with id: {productId}");
+                throw new HshopExceptions($"Cannot find a product with id: {productId}");
             }
             product.Stock += add_quantity;
             return await this.context.SaveChangesAsync() > 0;
+        }
+        private async Task<string> SaveFile(IFormFile file)
+        {
+            var originalFileName = ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName.Trim('"');
+            var fileName = $"{Guid.NewGuid()}{Path.GetExtension(originalFileName)}";
+            await this.storageService.SaveFileAsync(file.OpenReadStream(), fileName);
+            return "/" + USER_CONTENT_FOLDER_NAME + "/" + fileName;
         }
     }
 }
