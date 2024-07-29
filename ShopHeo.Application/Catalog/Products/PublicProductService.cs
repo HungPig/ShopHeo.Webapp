@@ -1,7 +1,6 @@
-﻿using ShopHeo.Application.Catalog.Products.Dtos;
-using ShopHeo.Application.Dtos;
+﻿using ShopHeo.Application.Dtos;
 using ShopHeo.Data.EF;
-using ShopHeo.ViewModels.CataLog.Products.Manager;
+using ShopHeo.ViewModels.CataLog.Products;
 using System;
 using System.Collections.Generic;
 using System.Text;

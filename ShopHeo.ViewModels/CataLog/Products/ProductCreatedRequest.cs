@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace ShopHeo.ViewModels.CataLog.Products.Manager
+namespace ShopHeo.ViewModels.CataLog.Products
 {
     public class ProductCreatedRequest
     {

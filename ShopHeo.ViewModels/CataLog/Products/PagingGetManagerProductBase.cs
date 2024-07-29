@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using ShopHeo.Application.Dtos;
 
-namespace ShopHeo.ViewModels.CataLog.Products.Manager
+namespace ShopHeo.ViewModels.CataLog.Products
 {
     public class PagingGetManagerProductBase : PagingRequestBase
     {
