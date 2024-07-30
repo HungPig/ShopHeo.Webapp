@@ -16,7 +16,7 @@ namespace ShopHeo.Application.Catalog.Products
         Task<int> Delete(int productId);
         Task<bool> UpdateStock(int productId, int quantity);
         Task<bool> UpdatePrice(int productId, decimal newPrice);
-
+        Task<ProductViewModel> GetById(int productId, string languageId);
         Task AddViewCount(int productId);
         Task<PageResult<ProductViewModel>> GetAllPaging(PagingGetManagerProductBase requestBase);
         Task<int> AddImage(int productId, List<IFormFile> formFiles);

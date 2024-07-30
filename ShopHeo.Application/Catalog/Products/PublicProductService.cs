@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
+using ShopHeo.Data.Entities;
 
 namespace ShopHeo.Application.Catalog.Products
 {
@@ -19,12 +20,13 @@ namespace ShopHeo.Application.Catalog.Products
             this.context = context;
         }
 
-        public async Task<List<ProductViewModel>> GetAll()
+        public async Task<List<ProductViewModel>> GetAll(string languageId)
         {
             var query = from p in this.context.Products
                         join pt in this.context.ProductTranslations on p.Id equals pt.ProductId
                         join pic in this.context.ProductInCategories on p.Id equals pic.ProductId
                         join c in this.context.Categories on pic.CategoryId equals c.Id
+                        where pt.LanguageId == languageId
                         select new { p, pt, pic, c };
             var data = await query.Select(x => new ProductViewModel()
             {

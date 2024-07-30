@@ -7,6 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using ShopHeo.Application.Catalog.Products;
+using ShopHeo.Application.Common;
 using ShopHeo.Data.EF;
 using ShopHeo.Untitiles.Constants;
 using ShopHeo.Untitiles.Exceptions;
@@ -32,7 +33,9 @@ namespace ShopHeo.BackendAPI
             services.AddDbContext<HshopDBContext>(options =>
             options.UseSqlServer(Configuration.GetConnectionString(SystemConstants.MainConnectionString)));
             //Declare DI
+            services.AddTransient<IStorageService, FileStorageService>();
             services.AddTransient<IPublicProductService, PublicProductService>();
+            services.AddTransient<IManageProductService, ManageProductService>();
             services.AddControllersWithViews();
             services.AddSwaggerGen(c =>
             {
@@ -68,8 +71,9 @@ namespace ShopHeo.BackendAPI
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
-                    name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{id?}");
+    name: "default",
+    pattern: "{controller=Home}/{action=Index}/{id?}");
+
             });
         }
     }
