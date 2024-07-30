@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using ShopHeo.Application.Catalog.Products.Dtos;
 using ShopHeo.Application.Dtos;
 using ShopHeo.Data.EF;
 using ShopHeo.Data.Entities;
@@ -9,12 +8,12 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Linq;
 using System.Threading.Tasks.Dataflow;
-using ShopHeo.ViewModels.CataLog.Products.Manager;
 using Microsoft.AspNetCore.Http;
 using System.IO;
 using System.Net.Http.Headers;
 using ShopHeo.Application.Common;
 using ShopHeo.Untitiles.Exceptions;
+using ShopHeo.ViewModels.CataLog.Products;
 
 namespace ShopHeo.Application.Catalog.Products
 {
@@ -27,6 +26,12 @@ namespace ShopHeo.Application.Catalog.Products
         {
             this.context = context;
             this.storageService = storageService;
+        }
+
+        public async Task<int> AddImage(int productId, List<IFormFile> formFiles)
+        {
+            // find id product
+          throw new NotImplementedException();
         }
 
         public async Task AddViewCount(int productId)
@@ -90,9 +95,20 @@ namespace ShopHeo.Application.Catalog.Products
             {
                 throw new HshopExceptions($"Cannot find a product: {productId}");
             }
+            var images = this.context.ProductImages.Where(i => i.ProductId == productId);
+            foreach (var image in images)
+            {
+                await this.storageService.DeleteFileAsync(image.ImagePath);
+            }
             this.context.Products.Remove(product);
             return await this.context.SaveChangesAsync();
         }
+
+        public Task<ImageViewModel> GetAllImage(int productId)
+        {
+            throw new NotImplementedException();
+        }
+
         public async Task<PageResult<ProductViewModel>> GetAllPaging(PagingGetManagerProductBase request)
         {
             //query
@@ -121,6 +137,9 @@ namespace ShopHeo.Application.Catalog.Products
                     DateCreated = x.p.DateCreated,
                     OriginalPrice = x.p.OriginalPrice,
                     Price = x.p.Price,
+                    SeoAlias = x.pt.SeoAlias,
+                    SeoDescription = x.pt.SeoDescription,
+                    SeoTitle = x.pt.SeoTitle,
                     Stock = x.p.Stock,
                     ViewCount = x.p.ViewCount
                 }).ToListAsync();
@@ -133,6 +152,12 @@ namespace ShopHeo.Application.Catalog.Products
             return pageResult;
 
         }
+
+        public Task<int> RemoveImage(int imageId)
+        {
+            throw new NotImplementedException();
+        }
+
         // cap nhap san pham
         public async Task<int> Update(ProductUpdateRequest request)
         {
@@ -149,7 +174,34 @@ namespace ShopHeo.Application.Catalog.Products
             productTranslation.SeoTitle = request.SeoTitle;
             productTranslation.Details = request.Details;
             productTranslation.Description = request.Description;
+            if (request.ThumbnailFile != null)
+            {
+                var thumbnailImage = await this.context.ProductImages.FirstOrDefaultAsync(i => i.ProductId == request.Id && i.IsDefault == true);
+                if(thumbnailImage != null)
+                {
+                    thumbnailImage.FileSize = request.ThumbnailFile.Length;
+                    thumbnailImage.ImagePath = await this.SaveFile(request.ThumbnailFile);
+                    this.context.ProductImages.Update(thumbnailImage);
+                }
+                product.ProductImages = new List<ProductImage>()
+                {
+                    new ProductImage()
+                    {
+                        Caption = "Thumbnail image",
+                        DateCreated = DateTime.Now,
+                        FileSize = request.ThumbnailFile.Length,
+                        ImagePath = await this.SaveFile(request.ThumbnailFile),
+                        IsDefault = true,
+                        SortOrder = 1
+                    }
+                };
+            }
             return await this.context.SaveChangesAsync();
+        }
+
+        public Task<int> UpdateImage(int imageId, string caption, bool isDefault)
+        {
+            throw new NotImplementedException();
         }
 
         public async Task<bool> UpdatePrice(int productId, decimal newPrice)
