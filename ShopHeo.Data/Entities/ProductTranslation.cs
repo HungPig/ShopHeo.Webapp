@@ -20,5 +20,6 @@ namespace ShopHeo.Data.Entities
         public Product Product { get; set; }
 
         public Language Language { get; set; }
+
     }
 }

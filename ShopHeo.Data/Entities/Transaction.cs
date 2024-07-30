@@ -1,4 +1,4 @@
-﻿using ShopHeo.Data.Enum;
+﻿using ShopHeo.Data.Enums;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -18,5 +18,8 @@ namespace ShopHeo.Data.Entities
         public string Provider { set; get; }
 
         public Guid UserId { get; set; }
+
+        public AppUser AppUser { get; set; }
+
     }
 }
