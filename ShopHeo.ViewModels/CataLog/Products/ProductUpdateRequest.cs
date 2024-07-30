@@ -1,8 +1,9 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace ShopHeo.ViewModels.CataLog.Products.Manager
+namespace ShopHeo.ViewModels.CataLog.Products
 {
     public class ProductUpdateRequest
     {
@@ -15,5 +16,6 @@ namespace ShopHeo.ViewModels.CataLog.Products.Manager
         public string SeoTitle { set; get; }
         public string SeoAlias { get; set; }
         public string LanguageId { set; get; }
+        public IFormFile ThumbnailFile { get; set; }
     }
 }

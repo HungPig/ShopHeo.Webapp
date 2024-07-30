@@ -1,7 +1,7 @@
 ﻿
-using ShopHeo.Application.Catalog.Products.Dtos;
+using Microsoft.AspNetCore.Http;
 using ShopHeo.Application.Dtos;
-using ShopHeo.ViewModels.CataLog.Products.Manager;
+using ShopHeo.ViewModels.CataLog.Products;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -19,6 +19,10 @@ namespace ShopHeo.Application.Catalog.Products
 
         Task AddViewCount(int productId);
         Task<PageResult<ProductViewModel>> GetAllPaging(PagingGetManagerProductBase requestBase);
+        Task<int> AddImage(int productId, List<IFormFile> formFiles);
+        Task<int> RemoveImage(int imageId);
+        Task<int> UpdateImage(int imageId, string caption, bool isDefault);
+        Task<ImageViewModel> GetAllImage(int productId);
 
     }
 }
