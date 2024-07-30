@@ -30,8 +30,7 @@ namespace ShopHeo.Application.Catalog.Products
 
         public async Task<int> AddImage(int productId, List<IFormFile> formFiles)
         {
-            // find id product
-          throw new NotImplementedException();
+            throw new NotImplementedException();
         }
 
         public async Task AddViewCount(int productId)
@@ -85,7 +84,8 @@ namespace ShopHeo.Application.Catalog.Products
                 };
             }
             this.context.Products.Add(product);
-            return await this.context.SaveChangesAsync();
+            await this.context.SaveChangesAsync();
+            return product.Id;
         }
 
         public async Task<int> Delete(int productId)
@@ -151,6 +151,39 @@ namespace ShopHeo.Application.Catalog.Products
             };
             return pageResult;
 
+        }
+
+        public async Task<ProductViewModel> GetById(int productId, string languageId)
+        {
+            var product = await this.context.Products.FindAsync(productId);
+            var productTranslation = await this.context.ProductTranslations.FirstOrDefaultAsync(x => x.ProductId == productId
+            && x.LanguageId == languageId);
+
+            var categories = await (from c in this.context.Categories
+                                    join ct in this.context.CategoryTranslations on c.Id equals ct.CategoryId
+                                    join pic in this.context.ProductInCategories on c.Id equals pic.CategoryId
+                                    where pic.ProductId == productId && ct.LanguageId == languageId
+                                    select ct.Name).ToListAsync();
+
+            var image = await this.context.ProductImages.Where(x => x.ProductId == productId && x.IsDefault == true).FirstOrDefaultAsync();
+
+            var productViewModel = new ProductViewModel()
+            {
+                Id = product.Id,
+                DateCreated = product.DateCreated,
+                Description = productTranslation != null ? productTranslation.Description : null,
+                LanguageId = productTranslation.LanguageId,
+                Details = productTranslation != null ? productTranslation.Details : null,
+                Name = productTranslation != null ? productTranslation.Name : null,
+                OriginalPrice = product.OriginalPrice,
+                Price = product.Price,
+                SeoAlias = productTranslation != null ? productTranslation.SeoAlias : null,
+                SeoDescription = productTranslation != null ? productTranslation.SeoDescription : null,
+                SeoTitle = productTranslation != null ? productTranslation.SeoTitle : null,
+                Stock = product.Stock,
+                ViewCount = product.ViewCount,              
+            };
+            return productViewModel;
         }
 
         public Task<int> RemoveImage(int imageId)

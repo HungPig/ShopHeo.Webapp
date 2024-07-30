@@ -14,4 +14,8 @@
     <ProjectReference Include="..\ShopHeo.Untitiles\ShopHeo.Untitiles.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\user-content\" />
+  </ItemGroup>
+
 </Project>
