@@ -14,6 +14,8 @@ using System.Net.Http.Headers;
 using ShopHeo.Application.Common;
 using ShopHeo.Untitiles.Exceptions;
 using ShopHeo.ViewModels.CataLog.Products;
+using ShopHeo.ViewModels.CataLog.ProductsImage;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace ShopHeo.Application.Catalog.Products
 {
@@ -28,9 +30,26 @@ namespace ShopHeo.Application.Catalog.Products
             this.storageService = storageService;
         }
 
-        public async Task<int> AddImage(int productId, List<IFormFile> formFiles)
+        public async Task<int> AddImage(int productId, ProductImageCreatedRequest request)
         {
-            throw new NotImplementedException();
+            var productImage = new ProductImage()
+            {
+                ProductId = productId,
+                Caption = request.Caption,
+                DateCreated = DateTime.Now,
+                FileSize = request.ImageFile.Length,
+                ImagePath = await this.SaveFile(request.ImageFile),
+                IsDefault = request.IsDefault,
+                SortOrder = request.SortOrder
+            };
+            if(request.ImageFile != null)
+            {
+                productImage.ImagePath = await this.SaveFile(request.ImageFile);
+                productImage.FileSize = request.ImageFile.Length;
+            }
+            this.context.ProductImages.Add(productImage);
+            await this.context.SaveChangesAsync();
+            return productImage.Id;
         }
 
         public async Task AddViewCount(int productId)
@@ -104,9 +123,19 @@ namespace ShopHeo.Application.Catalog.Products
             return await this.context.SaveChangesAsync();
         }
 
-        public Task<ImageViewModel> GetAllImage(int productId)
+        public async Task<List<ProductImageViewModel>> GetListImages(int productId)
         {
-            throw new NotImplementedException();
+            return await this.context.ProductImages.Where(i => i.ProductId == productId)
+                .Select(i => new ProductImageViewModel()
+                {
+                    Id = i.Id,
+                    Caption = i.Caption,
+                    DateCreated = i.DateCreated,
+                    FileSize = i.FileSize,
+                    ImagePath = i.ImagePath,
+                    IsDefault = i.IsDefault,
+                    SortOrder = i.SortOrder
+                }).ToListAsync();
         }
 
         public async Task<PageResult<ProductViewModel>> GetAllPaging(PagingGetManagerProductBase request)
@@ -186,9 +215,15 @@ namespace ShopHeo.Application.Catalog.Products
             return productViewModel;
         }
 
-        public Task<int> RemoveImage(int imageId)
+        public async Task<int> RemoveImage(int imageId)
         {
-            throw new NotImplementedException();
+            var productimage = await this.context.ProductImages.FindAsync(imageId);
+            if (productimage == null)
+            {
+                throw new HshopExceptions($"Cannot find a product image with id: {imageId}");
+            }
+            this.context.ProductImages.Remove(productimage);
+            return await this.context.SaveChangesAsync();
         }
 
         // cap nhap san pham
@@ -232,9 +267,20 @@ namespace ShopHeo.Application.Catalog.Products
             return await this.context.SaveChangesAsync();
         }
 
-        public Task<int> UpdateImage(int imageId, string caption, bool isDefault)
+        public async Task<int> UpdateImage(int imageId, ProductImageUpdateRequest product)
         {
-            throw new NotImplementedException();
+            var productImage = await this.context.ProductImages.FindAsync(imageId);
+            if (productImage == null)
+            {
+                throw new HshopExceptions($"Cannot find a product image with id: {imageId}");
+            }
+            if (product.ImageFile != null)
+            {
+                productImage.FileSize = product.ImageFile.Length;
+                productImage.ImagePath = await this.SaveFile(product.ImageFile);
+            }
+            this.context.ProductImages.Update(productImage);
+            return await this.context.SaveChangesAsync();
         }
 
         public async Task<bool> UpdatePrice(int productId, decimal newPrice)
@@ -266,6 +312,27 @@ namespace ShopHeo.Application.Catalog.Products
             var fileName = $"{Guid.NewGuid()}{Path.GetExtension(originalFileName)}";
             await this.storageService.SaveFileAsync(file.OpenReadStream(), fileName);
             return "/" + USER_CONTENT_FOLDER_NAME + "/" + fileName;
+        }
+
+        public async Task<ProductImageViewModel> GetImageId(int ImageId)
+        {
+            var image = await this.context.ProductImages.FindAsync(ImageId);
+            if (image == null)
+            {
+                throw new HshopExceptions($"Cannot find a image with id: {ImageId}");
+            }
+            var viewModel = new ProductImageViewModel()
+            {
+                Caption = image.Caption,
+                DateCreated = image.DateCreated,
+                FileSize = image.FileSize,
+                Id = image.Id,
+                ImagePath = image.ImagePath,
+                IsDefault = image.IsDefault,
+                ProductId = image.ProductId,
+                SortOrder = image.SortOrder
+            };
+            return viewModel;
         }
     }
 }
