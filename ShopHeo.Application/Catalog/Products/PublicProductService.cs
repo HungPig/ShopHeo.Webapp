@@ -20,34 +20,12 @@ namespace ShopHeo.Application.Catalog.Products
             this.context = context;
         }
 
-        public async Task<List<ProductViewModel>> GetAll(string languageId)
+        public Task<List<ProductViewModel>> GetAll(string languageId)
         {
-            var query = from p in this.context.Products
-                        join pt in this.context.ProductTranslations on p.Id equals pt.ProductId
-                        join pic in this.context.ProductInCategories on p.Id equals pic.ProductId
-                        join c in this.context.Categories on pic.CategoryId equals c.Id
-                        where pt.LanguageId == languageId
-                        select new { p, pt, pic, c };
-            var data = await query.Select(x => new ProductViewModel()
-            {
-                Id = x.p.Id,
-                Name = x.pt.Name,
-                DateCreated = x.p.DateCreated,
-                Description = x.pt.Description,
-                Details = x.pt.Details,
-                LanguageId = x.pt.LanguageId,
-                OriginalPrice = x.p.OriginalPrice,
-                Price = x.p.Price,
-                SeoAlias = x.pt.SeoAlias,
-                SeoDescription = x.pt.SeoDescription,
-                SeoTitle = x.pt.SeoTitle,
-                Stock = x.p.Stock,
-                ViewCount = x.p.ViewCount
-            }).ToListAsync();
-            return data;
+            throw new NotImplementedException();
         }
 
-        public async Task<PageResult<ProductViewModel>> GetAllByCategoryId(PagingGetManagerProductBase request)
+        public async Task<PageResult<ProductViewModel>> GetAllByCategoryId(string languageId, PagingGetManagerProductBase request)
         {
             //query
             var query = from p in this.context.Products
@@ -91,6 +69,11 @@ namespace ShopHeo.Application.Catalog.Products
                 Items = data
             };
             return pageResult;
+        }
+
+        public Task<PageResult<ProductViewModel>> GetAllByCategoryId(string languageId, PagingGetPublicProductBase request)
+        {
+            throw new NotImplementedException();
         }
     }
 }
