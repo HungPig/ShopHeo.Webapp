@@ -7,6 +7,6 @@ namespace ShopHeo.ViewModels.CataLog.Products
 {
     public class PagingGetPublicProductBase : PagingRequestBase
     {
-        public int CategoryID { get; set; }
+        public int CategoryId { get; set; }
     }
 }

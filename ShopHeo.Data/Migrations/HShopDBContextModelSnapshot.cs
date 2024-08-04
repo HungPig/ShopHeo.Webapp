@@ -260,7 +260,7 @@ namespace ShopHeo.Data.Migrations
                         {
                             Id = new Guid("69bd714f-9576-45ba-b5b7-f00649be00de"),
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "c0c2d301-9457-4d06-94b9-8274dd80a7be",
+                            ConcurrencyStamp = "ed984d37-4211-4dfb-87bb-ead9e6b57e07",
                             Dob = new DateTime(2020, 1, 31, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "Heo.international@gmail.com",
                             EmailConfirmed = true,
@@ -269,7 +269,7 @@ namespace ShopHeo.Data.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "Heo.international@gmail.com",
                             NormalizedUserName = "admin",
-                            PasswordHash = "AQAAAAIAAYagAAAAEKEdqxP9Z24dn0ar+K5QcaQQpygPWLvIak6ZPwQKM8cMDmindiI5cFwvoqQe7kE+Pw==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEIzUOCnu9sdvZTFfq/CDYDsfkABsAItskSKTbUXC1xLqUUVba8724Itw3T2dFH63Tg==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "",
                             TwoFactorEnabled = false,
@@ -617,7 +617,7 @@ namespace ShopHeo.Data.Migrations
                         new
                         {
                             Id = 1,
-                            DateCreated = new DateTime(2024, 7, 29, 20, 53, 40, 672, DateTimeKind.Local).AddTicks(2140),
+                            DateCreated = new DateTime(2024, 8, 4, 12, 45, 49, 786, DateTimeKind.Local).AddTicks(223),
                             OriginalPrice = 100000m,
                             Price = 200000m,
                             Stock = 0,
@@ -810,16 +810,24 @@ namespace ShopHeo.Data.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
+                        .HasAnnotation("SqlServer:IdentityIncrement", 1)
+                        .HasAnnotation("SqlServer:IdentitySeed", 1)
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Description")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasColumnType("nvarchar(200)")
+                        .HasMaxLength(200);
 
                     b.Property<string>("Image")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasColumnType("nvarchar(200)")
+                        .HasMaxLength(200);
 
                     b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasColumnType("nvarchar(200)")
+                        .HasMaxLength(200);
 
                     b.Property<int>("SortOrder")
                         .HasColumnType("int");
@@ -828,7 +836,9 @@ namespace ShopHeo.Data.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Url")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasColumnType("nvarchar(200)")
+                        .HasMaxLength(200);
 
                     b.HasKey("Id");
 

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ShopHeo.Application.Catalog.Products;
 using ShopHeo.Data.Entities;
@@ -10,6 +11,7 @@ namespace ShopHeo.BackendAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class ProductsController : ControllerBase
     {
         public readonly IPublicProductService publicProductService;
@@ -20,14 +22,8 @@ namespace ShopHeo.BackendAPI.Controllers
             this.manageProductService = manageProductService;
         }
         //http://localhost:port/products
-        [HttpGet("languageId")]
-        public async Task<IActionResult> GetALL(string languageId)
-        {
-            var produts = await this.publicProductService.GetAll(languageId);
-            return Ok(produts);
-        }
         //http://localhost:port/products/pubic-paging
-        [HttpGet("public-paging/{languageId}")]
+        [HttpGet("{languageId}")]
         public async Task<IActionResult> GetAllPaging(string languageId, [FromQuery]PagingGetPublicProductBase request)
         {
             var produts = await this.publicProductService.GetAllByCategoryId(languageId, request);

@@ -32,34 +32,32 @@ namespace ShopHeo.Application.System.Users
         }
         public async Task<ApiResult<string>> Authencate(LoginRequest request)
         {
-            // dieu kien tim tai khoan
             var user = await this.userManager.FindByNameAsync(request.UserName);
             if (user == null) return new ApiErrorResult<string>("Tài khoản không tồn tại");
-            // thanh cong
+
             var result = await this.signInManager.PasswordSignInAsync(user, request.Password, request.RememberMe, true);
             if (!result.Succeeded)
             {
-                return new ApiErrorResult<string>("Sai mật khẩu");
+                return new ApiErrorResult<string>("Đăng nhập không đúng");
             }
             var roles = await this.userManager.GetRolesAsync(user);
             var claims = new[]
             {
-                new Claim(ClaimTypes.Email, user.Email),
-                new Claim(ClaimTypes.GivenName, user.FirstName),
-                new Claim(ClaimTypes.Role, string.Join(";", roles)),
-                new Claim(ClaimTypes.Name, user.UserName)
+                new Claim(ClaimTypes.Email,user.Email),
+                new Claim(ClaimTypes.GivenName,user.FirstName),
+                new Claim(ClaimTypes.Role, string.Join(";",roles)),
+                new Claim(ClaimTypes.Name, request.UserName)
             };
-            // sercurity token
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["Tokens:Key"]));
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(this.config["Tokens:Key"]));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+
             var token = new JwtSecurityToken(this.config["Tokens:Issuer"],
-               this.config["Tokens:Issuer"],
-               claims,
-               expires: DateTime.Now.AddHours(3),
-               signingCredentials: creds);
+                 this.config["Tokens:Issuer"],
+                claims,
+                expires: DateTime.Now.AddHours(3),
+                signingCredentials: creds);
 
             return new ApiSuccessResult<string>(new JwtSecurityTokenHandler().WriteToken(token));
-
         }
 
         public async Task<ApiResult<bool>> Delete(Guid id)
