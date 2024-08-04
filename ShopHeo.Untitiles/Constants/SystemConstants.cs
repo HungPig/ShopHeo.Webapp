@@ -6,7 +6,7 @@ namespace ShopHeo.Untitiles.Constants
 {
     public class SystemConstants
     {
-        public const string MainConnectionString = "ShopHeoDb";
+        public const string MainConnectionString = "HeoShopSolution";
         public const string CartSession = "CartSession";
         public const string LanguageId = "vi-VN";
         public const string DefaultFooterId = "DefaultFooterId";

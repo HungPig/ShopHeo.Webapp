@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ShopHeo.Application\ShopHeo.Application.csproj" />
+    <ProjectReference Include="..\ShopHeo.Data\ShopHeo.Data.csproj" />
+    <ProjectReference Include="..\ShopHeo.Untitiles\ShopHeo.Untitiles.csproj" />
+    <ProjectReference Include="..\ShopHeo.ViewModels\ShopHeo.ViewModels.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.5" />
+  </ItemGroup>
+
+</Project>
