@@ -1,15 +1,16 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ShopHeo.ViewModels.CataLog.Users;
-using System.Threading.Tasks;
 
 namespace ShopHeo.AdminApp.Controllers
 {
-    public class UsersController : Controller
+    public class UserController : Controller
     {
         public IActionResult Index()
         {
             return View();
         }
+
+        // design for login user
         [HttpGet]
         public IActionResult Login()
         {

@@ -2,17 +2,17 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
+    <CopyRefAssembliesToPublishDirectory>false</CopyRefAssembliesToPublishDirectory>
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ShopHeo.Application\ShopHeo.Application.csproj" />
-    <ProjectReference Include="..\ShopHeo.Data\ShopHeo.Data.csproj" />
-    <ProjectReference Include="..\ShopHeo.Untitiles\ShopHeo.Untitiles.csproj" />
-    <ProjectReference Include="..\ShopHeo.ViewModels\ShopHeo.ViewModels.csproj" />
+    <PackageReference Include="FluentValidation.AspNetCore" Version="8.6.2" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="3.1.32" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.5" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.5" />
+    <ProjectReference Include="..\ShopHeo.ViewModels\ShopHeo.ViewModels.csproj" />
   </ItemGroup>
 
 </Project>

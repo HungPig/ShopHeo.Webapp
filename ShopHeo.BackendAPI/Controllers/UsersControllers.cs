@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ShopHeo.Application.System.User;
 using ShopHeo.Application.System.Users;
@@ -9,6 +10,7 @@ namespace ShopHeo.BackendAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class UsersControllers : ControllerBase
     {
         private readonly IUserService userService;
@@ -17,6 +19,7 @@ namespace ShopHeo.BackendAPI.Controllers
             this.userService = userService;
         }
         [HttpPost("authenticate")]
+        [AllowAnonymous]
         public async Task<IActionResult> Authenticate([FromForm] LoginRequest request)
         {
             if (!ModelState.IsValid)
@@ -26,11 +29,12 @@ namespace ShopHeo.BackendAPI.Controllers
 
             if (string.IsNullOrEmpty(resultToken.ResultObj))
             {
-                return BadRequest(resultToken);
+                return BadRequest("Username or password is incorrect");
             }
             return Ok(new {token = resultToken });
         }
-        [HttpPost]
+        [HttpPost("register")]
+        [AllowAnonymous]
         public async Task<IActionResult> Register([FromForm] RegisterRequest request)
         {
             if (!ModelState.IsValid)
