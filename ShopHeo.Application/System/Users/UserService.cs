@@ -21,26 +21,27 @@ namespace ShopHeo.Application.System.Users
 {
     public class UserService : IUserService
     {
-        private readonly UserManager<AppUser> userManager;
-        private readonly SignInManager<AppUser> signInManager;
-        private readonly IConfiguration config;
+        private readonly UserManager<AppUser> _userManager;
+        private readonly SignInManager<AppUser> _signInManager;
+        private readonly IConfiguration _config;
         public UserService(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, IConfiguration config)
         {
-            this.userManager = userManager;
-            this.signInManager = signInManager;
-            this.config = config;
+            _userManager = userManager;
+            _signInManager = signInManager;
+            _config = config;
         }
-        public async Task<ApiResult<string>> Authencate(LoginRequest request)
-        {
-            var user = await this.userManager.FindByNameAsync(request.UserName);
-            if (user == null) return new ApiErrorResult<string>("Tài khoản không tồn tại");
 
-            var result = await this.signInManager.PasswordSignInAsync(user, request.Password, request.RememberMe, true);
+        public async Task<string> Authencate(LoginRequest request)
+        {
+            var user = await _userManager.FindByNameAsync(request.UserName);
+            if (user == null) return null;
+
+            var result = await _signInManager.PasswordSignInAsync(user, request.Password, request.RememberMe, true);
             if (!result.Succeeded)
             {
-                return new ApiErrorResult<string>("Đăng nhập không đúng");
+                return null;
             }
-            var roles = await this.userManager.GetRolesAsync(user);
+            var roles = await _userManager.GetRolesAsync(user);
             var claims = new[]
             {
                 new Claim(ClaimTypes.Email,user.Email),
@@ -48,101 +49,21 @@ namespace ShopHeo.Application.System.Users
                 new Claim(ClaimTypes.Role, string.Join(";",roles)),
                 new Claim(ClaimTypes.Name, request.UserName)
             };
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(this.config["Tokens:Key"]));
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Tokens:Key"]));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
-            var token = new JwtSecurityToken(this.config["Tokens:Issuer"],
-                 this.config["Tokens:Issuer"],
+            var token = new JwtSecurityToken(_config["Tokens:Issuer"],
+                _config["Tokens:Issuer"],
                 claims,
                 expires: DateTime.Now.AddHours(3),
                 signingCredentials: creds);
 
-            return new ApiSuccessResult<string>(new JwtSecurityTokenHandler().WriteToken(token));
+            return new JwtSecurityTokenHandler().WriteToken(token);
         }
 
-        public async Task<ApiResult<bool>> Delete(Guid id)
+        public async Task<bool> Register(RegisterRequest request)
         {
-            var user = await this.userManager.FindByIdAsync(id.ToString());
-            if (user == null) return new ApiErrorResult<bool>("Tài khoản không tồn tại");
-            var result = await this.userManager.DeleteAsync(user);
-            if (result.Succeeded)
-            {
-                return new ApiSuccessResult<bool>();
-            }
-            return new ApiErrorResult<bool>("Xóa tài khoản không thành công");
-
-        }
-
-        public async Task<ApiResult<UserViewModel>> GetById(Guid id)
-        {
-            var user = await this.userManager.FindByIdAsync(id.ToString());
-            if (user == null)
-            {
-                return new ApiErrorResult<UserViewModel>("User không tồn tại");
-            }
-            var roles = await this.userManager.GetRolesAsync(user);
-            var userVm = new UserViewModel()
-            {
-                Email = user.Email,
-                PhoneNumber = user.PhoneNumber,
-                FirstName = user.FirstName,
-                Dob = user.Dob,
-                Id = user.Id,
-                LastName = user.LastName,
-                UserName = user.UserName,
-                Roles = roles
-            };
-            return new ApiSuccessResult<UserViewModel>(userVm);
-        }
-
-        public async Task<ApiResult<PageResult<UserViewModel>>> GetUsersPaging(GetUserPagingRequest request)
-        {
-            var query = this.userManager.Users;
-            if (!string.IsNullOrEmpty(request.Keyword))
-            {
-                query = query.Where(x => x.UserName.Contains(request.Keyword)
-                 || x.PhoneNumber.Contains(request.Keyword));
-            }
-
-            //3. Paging
-            int totalRow = await query.CountAsync();
-
-            var data = await query.Skip((request.pageIndex - 1) * request.pageSize)
-                .Take(request.pageSize)
-                .Select(x => new UserViewModel()
-                {
-                    Email = x.Email,
-                    PhoneNumber = x.PhoneNumber,
-                    UserName = x.UserName,
-                    FirstName = x.FirstName,
-                    Id = x.Id,
-                    LastName = x.LastName
-                }).ToListAsync();
-
-            //4. Select and projection
-            var pagedResult = new PageResult<UserViewModel>()
-            {
-                TotalRecords = totalRow,
-                PageIndex = request.pageIndex,
-                PageSize = request.pageSize,
-                Items = data
-            };
-            return new ApiSuccessResult<PageResult<UserViewModel>>(pagedResult);
-        }
-
-        public async Task<ApiResult<bool>> Register(RegisterRequest request)
-        {
-            var user = await this.userManager.FindByNameAsync(request.UserName);
-            if (user != null)
-            {
-                return new ApiErrorResult<bool>("Tài khoản đã tồn tại");
-            }
-            if (await this.userManager.FindByEmailAsync(request.Email) != null)
-            {
-                return new ApiErrorResult<bool>("Emai đã tồn tại");
-            }
-
-            user = new AppUser()
+            var user = new AppUser()
             {
                 Dob = request.Dob,
                 Email = request.Email,
@@ -151,23 +72,12 @@ namespace ShopHeo.Application.System.Users
                 UserName = request.UserName,
                 PhoneNumber = request.PhoneNumber
             };
-            var result = await this.userManager.CreateAsync(user, request.Password);
+            var result = await _userManager.CreateAsync(user, request.Password);
             if (result.Succeeded)
             {
-                return new ApiSuccessResult<bool>();
+                return true;
             }
-            return new ApiErrorResult<bool>("Đăng ký không thành công");
-        }
-
-        public async Task<ApiResult<bool>> RoleAssign(Guid id, RoleUserRequest request)
-        {
-            throw new NotImplementedException();
-        }
-
-   
-        public Task<ApiResult<bool>> Update(Guid id, UserUpdateRequest request)
-        {
-            throw new NotImplementedException();
+            return false;
         }
     }
 }
