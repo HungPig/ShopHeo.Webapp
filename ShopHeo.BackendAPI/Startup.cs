@@ -51,20 +51,17 @@ namespace ShopHeo.BackendAPI
 
             services.AddTransient<IPublicProductService, PublicProductService>();
             services.AddTransient<IManageProductService, ManageProductService>();
-
             services.AddTransient<UserManager<AppUser>, UserManager<AppUser>>();
             services.AddTransient<SignInManager<AppUser>, SignInManager<AppUser>>();
             services.AddTransient<RoleManager<AppRole>, RoleManager<AppRole>>();
-            services.AddTransient<RoleManager<AppRole>, RoleManager<AppRole>>();
             services.AddTransient<IUserService, UserService>();
 
-            services.AddTransient<IValidator<LoginRequest>, LoginRequestValidator>();
-            services.AddTransient<IValidator<RegisterRequest>, RegisterRequestValidator>();
+            //services.AddTransient<IValidator<LoginRequest>, LoginRequestValidator>();
+            //services.AddTransient<IValidator<RegisterRequest>, RegisterRequestValidator>();
 
             services.AddControllers()
                 .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<LoginRequestValidator>());
 
-            services.AddControllers();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Swagger eShop Solution", Version = "v1" });
@@ -98,6 +95,7 @@ namespace ShopHeo.BackendAPI
                       }
                     });
             });
+
             string issuer = Configuration.GetValue<string>("Tokens:Issuer");
             string signingKey = Configuration.GetValue<string>("Tokens:Key");
             byte[] signingKeyBytes = System.Text.Encoding.UTF8.GetBytes(signingKey);
@@ -125,7 +123,6 @@ namespace ShopHeo.BackendAPI
             });
         }
 
-
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
@@ -141,24 +138,24 @@ namespace ShopHeo.BackendAPI
             }
             app.UseHttpsRedirection();
             app.UseStaticFiles();
+
             app.UseAuthentication();
             app.UseRouting();
 
             app.UseAuthorization();
 
             app.UseSwagger();
+
             app.UseSwaggerUI(c =>
             {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Swagger ShopHeo Demo V1");
-
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Swagger eShopSolution V1");
             });
 
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
-    name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
-
+                    name: "default",
+                    pattern: "{controller=Home}/{action=Index}/{id?}");
             });
         }
     }

@@ -1,51 +1,57 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using ShopHeo.Application.System.User;
 using ShopHeo.Application.System.Users;
 using ShopHeo.ViewModels.CataLog.Users;
 using System.Threading.Tasks;
+using Microsoft.IdentityModel.Tokens;
 
 namespace ShopHeo.BackendAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
     [Authorize]
-    public class UsersControllers : ControllerBase
+    public class UsersController : ControllerBase
     {
-        private readonly IUserService userService;
-        public UsersControllers(IUserService userService)
+        private readonly IUserService _userService;
+
+        public UsersController(IUserService userService)
         {
-            this.userService = userService;
+            _userService = userService;
         }
+
         [HttpPost("authenticate")]
         [AllowAnonymous]
-        public async Task<IActionResult> Authenticate([FromForm] LoginRequest request)
+        public async Task<IActionResult> Authenticate([FromBody] LoginRequest request)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            var resultToken = await this.userService.Authencate(request);
-
-            if (string.IsNullOrEmpty(resultToken.ResultObj))
+            var resultToken = await _userService.Authencate(request);
+            if (string.IsNullOrEmpty(resultToken))
             {
-                return BadRequest("Username or password is incorrect");
+                return BadRequest("Username or password is incorrect.");
             }
-            return Ok(new {token = resultToken });
+            return Ok(resultToken);
         }
+
         [HttpPost("register")]
         [AllowAnonymous]
-        public async Task<IActionResult> Register([FromForm] RegisterRequest request)
+        public async Task<IActionResult> Register([FromBody] RegisterRequest request)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            var result = await this.userService.Register(request);
-            if (!result.IsSuccessed)
+            var result = await _userService.Register(request);
+            if (!result)
             {
-                return BadRequest(result);
+                return BadRequest("Register is unsuccessful.");
             }
-            return Ok(result);
+            return Ok();
         }
     }
 }
