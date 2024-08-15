@@ -5,6 +5,9 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="FluentValidation.AspNetCore" Version="8.6.2" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.1.18" />
+    <PackageReference Include="Microsoft.AspNetCore.DataProtection" Version="5.0.0" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="5.0.0" />
   </ItemGroup>
 
@@ -12,6 +15,11 @@
     <ProjectReference Include="..\ShopHeo.Application\ShopHeo.Application.csproj" />
     <ProjectReference Include="..\ShopHeo.Data\ShopHeo.Data.csproj" />
     <ProjectReference Include="..\ShopHeo.Untitiles\ShopHeo.Untitiles.csproj" />
+    <ProjectReference Include="..\ShopHeo.ViewModels\ShopHeo.ViewModels.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="wwwroot\user-content\" />
   </ItemGroup>
 
 </Project>

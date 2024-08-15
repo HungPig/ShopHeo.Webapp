@@ -16,7 +16,7 @@ namespace ShopHeo.Data.EF
                  .SetBasePath(Directory.GetCurrentDirectory())
                  .AddJsonFile("appsettings.json")
                  .Build();
-            var ConnectionString = configuration.GetConnectionString("ShopHeoDb");
+            var ConnectionString = configuration.GetConnectionString("HeoShopSolution");
             var optionsBuilder = new DbContextOptionsBuilder<HshopDBContext>();
             optionsBuilder.UseSqlServer(ConnectionString);
 

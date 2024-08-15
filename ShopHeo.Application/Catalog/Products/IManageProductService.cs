@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using ShopHeo.Application.Dtos;
 using ShopHeo.ViewModels.CataLog.Products;
+using ShopHeo.ViewModels.CataLog.ProductsImage;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -16,13 +17,15 @@ namespace ShopHeo.Application.Catalog.Products
         Task<int> Delete(int productId);
         Task<bool> UpdateStock(int productId, int quantity);
         Task<bool> UpdatePrice(int productId, decimal newPrice);
-
+        Task<ProductViewModel> GetById(int productId, string languageId);
         Task AddViewCount(int productId);
         Task<PageResult<ProductViewModel>> GetAllPaging(PagingGetManagerProductBase requestBase);
-        Task<int> AddImage(int productId, List<IFormFile> formFiles);
+        // image
+        Task<int> AddImage(int productId, ProductImageCreatedRequest product);
         Task<int> RemoveImage(int imageId);
-        Task<int> UpdateImage(int imageId, string caption, bool isDefault);
-        Task<ImageViewModel> GetAllImage(int productId);
+        Task<int> UpdateImage(int imageId, ProductImageUpdateRequest product);
+        Task<List<ProductImageViewModel>> GetListImages(int productId);
+        Task<ProductImageViewModel> GetImageId(int ImageId);
 
     }
 }
