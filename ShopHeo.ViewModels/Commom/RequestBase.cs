@@ -4,9 +4,8 @@ using System.Text;
 
 namespace ShopHeo.ViewModels.Commom
 {
-    public class PagingRequestBase
+    public class RequestBase
     {
-        public int pageIndex { get; set; }
-        public int pageSize { get; set; }
+        public string BearerToken { get; set; }
     }
 }

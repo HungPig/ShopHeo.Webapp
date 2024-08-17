@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
-using ShopHeo.Application.Dtos;
 using ShopHeo.Application.System.User;
 using ShopHeo.Data.Entities;
 using ShopHeo.ViewModels.CataLog.Users;

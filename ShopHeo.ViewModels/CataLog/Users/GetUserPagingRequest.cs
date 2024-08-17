@@ -1,4 +1,5 @@
-﻿using ShopHeo.Application.Dtos;
+﻿
+using ShopHeo.ViewModels.Commom;
 using System;
 using System.Collections.Generic;
 using System.Text;

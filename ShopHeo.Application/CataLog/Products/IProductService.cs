@@ -1,8 +1,8 @@
 ﻿
 using Microsoft.AspNetCore.Http;
-using ShopHeo.Application.Dtos;
 using ShopHeo.ViewModels.CataLog.Products;
 using ShopHeo.ViewModels.CataLog.ProductsImage;
+using ShopHeo.ViewModels.Commom;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace ShopHeo.Application.Catalog.Products
 {
-    public interface IManageProductService
+    public interface IProductService
     {
         Task<int> Create(ProductCreatedRequest request);
         Task<int> Update(ProductUpdateRequest request);
@@ -26,6 +26,8 @@ namespace ShopHeo.Application.Catalog.Products
         Task<int> UpdateImage(int imageId, ProductImageUpdateRequest product);
         Task<List<ProductImageViewModel>> GetListImages(int productId);
         Task<ProductImageViewModel> GetImageId(int ImageId);
+
+        Task<PageResult<ProductViewModel>> GetAllByCategoryId(string languageId, PagingGetPublicProductBase request);
 
     }
 }
