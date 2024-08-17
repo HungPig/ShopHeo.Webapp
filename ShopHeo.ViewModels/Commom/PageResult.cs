@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace ShopHeo.Application.Dtos
+namespace ShopHeo.ViewModels.Commom
 {
     public class PageResult<T>
     {
