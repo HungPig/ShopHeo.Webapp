@@ -14,6 +14,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 
 namespace ShopHeo.AdminApp.Controllers
 {
@@ -28,9 +29,17 @@ namespace ShopHeo.AdminApp.Controllers
             _userApiClient = userApiClient;
             _configuration = configuration;
         }
-        public IActionResult Index()
+        public async Task<IActionResult> Index(string keyword, int pageIndex = 1, int pageSize = 10)
         {
-            return View();
+            var sessions = HttpContext.Session.GetString("Home");
+            var request = new GetUserPagingRequest()
+            {
+                pageIndex = 1,
+                pageSize = 10,
+                BearerToken = sessions
+            };
+            var data = await _userApiClient.GetUserPagings(request);
+            return View(data);
         }
 
 
@@ -61,6 +70,7 @@ namespace ShopHeo.AdminApp.Controllers
                 ExpiresUtc = DateTimeOffset.UtcNow.AddMinutes(10),
                 IsPersistent = false
             };
+            HttpContext.Session.SetString("Home", token);
             await HttpContext.SignInAsync(
                       CookieAuthenticationDefaults.AuthenticationScheme,
                       userPrincipal,

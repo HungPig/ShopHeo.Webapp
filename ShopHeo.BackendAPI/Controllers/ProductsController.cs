@@ -14,25 +14,23 @@ namespace ShopHeo.BackendAPI.Controllers
     [Authorize]
     public class ProductsController : ControllerBase
     {
-        public readonly IPublicProductService publicProductService;
-        public readonly IManageProductService manageProductService;
-        public ProductsController(IPublicProductService publicProductService, IManageProductService manageProductService)
+        private readonly IProductService _productService;
+        public ProductsController(IProductService productService)
         {
-            this.publicProductService = publicProductService;
-            this.manageProductService = manageProductService;
+            _productService = productService;
         }
         //http://localhost:port/products
         //http://localhost:port/products/pubic-paging
         [HttpGet("{languageId}")]
         public async Task<IActionResult> GetAllPaging(string languageId, [FromQuery]PagingGetPublicProductBase request)
         {
-            var produts = await this.publicProductService.GetAllByCategoryId(languageId, request);
+            var produts = await _productService.GetAllByCategoryId(languageId, request);
             return Ok(produts);
         }
         [HttpGet("{id}/{languageId}")]
         public async Task<IActionResult> GetById(int id, string languageId)
         {
-            var produts = await this.manageProductService.GetById(id, languageId);
+            var produts = await _productService.GetById(id, languageId);
             if (produts == null)
             {
                 return BadRequest("Cannot find product");
@@ -48,11 +46,11 @@ namespace ShopHeo.BackendAPI.Controllers
             {
                 return BadRequest(ModelState);
             }
-            var productId = await this.manageProductService.Create(request);
+            var productId = await _productService.Create(request);
             if (productId == 0)
                 return BadRequest();
 
-            var product = await this.manageProductService.GetById(productId, request.LanguageId);
+            var product = await _productService.GetById(productId, request.LanguageId);
 
             return CreatedAtAction(nameof(GetById), new { id = productId }, product);
         }
@@ -63,7 +61,7 @@ namespace ShopHeo.BackendAPI.Controllers
             {
                 return BadRequest(ModelState);
             }
-            var affectResult = await this.manageProductService.Update(request);
+            var affectResult = await _productService.Update(request);
             if (affectResult == 0)
                 return BadRequest();
             return Ok();
@@ -75,7 +73,7 @@ namespace ShopHeo.BackendAPI.Controllers
             {
                 return BadRequest(ModelState);
             }
-            var affectResult = await this.manageProductService.Delete(productID);
+            var affectResult = await _productService.Delete(productID);
             if (affectResult == 0)
                 return BadRequest();
             return Ok();
@@ -83,7 +81,7 @@ namespace ShopHeo.BackendAPI.Controllers
         [HttpPatch("{productID}/{newPrice}")]
         public async Task<IActionResult> UpdatePrice(int productID, decimal newPrice)
         {
-            var isSuccessful = await this.manageProductService.UpdatePrice(productID, newPrice);
+            var isSuccessful = await _productService.UpdatePrice(productID, newPrice);
             if (isSuccessful)
                 return Ok();
 
@@ -97,11 +95,11 @@ namespace ShopHeo.BackendAPI.Controllers
             {
                 return BadRequest(ModelState);
             }
-            var imageId = await this.manageProductService.AddImage(productId,request);
+            var imageId = await _productService.AddImage(productId,request);
             if (imageId == 0)
                 return BadRequest();
 
-            var image = await this.manageProductService.GetImageId(imageId);
+            var image = await _productService.GetImageId(imageId);
 
             return CreatedAtAction(nameof(GetImageId), new { id = imageId }, image);
         }
@@ -109,7 +107,7 @@ namespace ShopHeo.BackendAPI.Controllers
         [HttpGet("{productId}/images/{imageId}")]
         public async Task<IActionResult> GetImageId(int productId, int imageId)
         {
-            var image = await this.manageProductService.GetImageId(imageId);
+            var image = await _productService.GetImageId(imageId);
             if (image == null)
                 return BadRequest("Cannot find product");
             return Ok(image);
@@ -122,7 +120,7 @@ namespace ShopHeo.BackendAPI.Controllers
             {
                 return BadRequest(ModelState);
             }
-            var Result = await this.manageProductService.UpdateImage(imageId,request);
+            var Result = await _productService.UpdateImage(imageId,request);
             if (Result == 0)
                 return BadRequest();
             return Ok();
@@ -135,7 +133,7 @@ namespace ShopHeo.BackendAPI.Controllers
             {
                 return BadRequest(ModelState);
             }
-            var affectResult = await this.manageProductService.Delete(imageId);
+            var affectResult = await _productService.Delete(imageId);
             if (affectResult == 0)
                 return BadRequest();
             return Ok();
