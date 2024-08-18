@@ -13,5 +13,6 @@ namespace ShopHeo.Application.System.User
         Task<string> Authencate(LoginRequest request);
 
         Task<bool> Register(RegisterRequest request);
+        Task<PageResult<UserViewModel>> GetUsersPaging(GetUserPagingRequest request);
     }
 }

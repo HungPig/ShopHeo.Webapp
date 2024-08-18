@@ -28,7 +28,7 @@ namespace ShopHeo.AdminApp
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddHttpClient();
-
+          
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                .AddCookie(options =>
                {
@@ -39,6 +39,10 @@ namespace ShopHeo.AdminApp
             services.AddControllersWithViews()
                      .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<LoginRequestValidator>());
 
+            services.AddSession(options =>
+            {
+                options.IdleTimeout = TimeSpan.FromMinutes(30);
+            });
             services.AddTransient<IUserApiClient, UserApiClient>();
 
             IMvcBuilder builder = services.AddRazorPages();
@@ -73,7 +77,7 @@ namespace ShopHeo.AdminApp
             app.UseRouting();
 
             app.UseAuthorization();
-
+            app.UseSession();
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
