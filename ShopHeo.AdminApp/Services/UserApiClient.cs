@@ -46,5 +46,15 @@ namespace ShopHeo.AdminApp.Service
             var users = JsonConvert.DeserializeObject<PageResult<UserViewModel>>(body);
             return users;
         }
+
+        public async Task<bool> RegisterUser(RegisterRequest registerRequest)
+        {
+            var client = _httpClientFactory.CreateClient();
+            client.BaseAddress = new Uri(_configuration["BaseAddress"]);
+            var json = JsonConvert.SerializeObject(registerRequest);
+            var httpContent = new StringContent(json, Encoding.UTF8, "application/json");
+            var response = await client.PostAsync($"/api/users",httpContent);
+            return response.IsSuccessStatusCode;
+        }
     }
 }

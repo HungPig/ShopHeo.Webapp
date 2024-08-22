@@ -13,5 +13,7 @@ namespace ShopHeo.AdminApp.Service
         Task<string> Authenticate(LoginRequest request);
 
         Task<PageResult<UserViewModel>> GetUserPagings(GetUserPagingRequest request);
+
+        Task<bool> RegisterUser(RegisterRequest registerRequest);
     }
 }
