@@ -18,7 +18,7 @@ using Microsoft.AspNetCore.Http;
 
 namespace ShopHeo.AdminApp.Controllers
 {
-    
+
     public class UserController : Controller
     {
         private readonly IUserApiClient _userApiClient;
@@ -42,6 +42,25 @@ namespace ShopHeo.AdminApp.Controllers
             return View(data);
         }
 
+        [HttpGet]
+        public async Task<IActionResult> Created()
+        {          
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Created(RegisterRequest register)
+        {
+            if (!ModelState.IsValid)
+                return View(ModelState);
+            var Result = await _userApiClient.RegisterUser(register);
+            if (Result)
+            {
+                TempData["result"] = "Thêm mới thành công";
+                return RedirectToAction("Index");
+            }
+            return View();
+        }
 
         [HttpGet]
         public async Task<IActionResult> Login()
