@@ -39,7 +39,7 @@ namespace ShopHeo.BackendAPI.Controllers
             return Ok(resultToken);
         }
 
-        [HttpPost("register")]
+        [HttpPost]
         [AllowAnonymous]
         public async Task<IActionResult> Register([FromBody] RegisterRequest request)
         {
