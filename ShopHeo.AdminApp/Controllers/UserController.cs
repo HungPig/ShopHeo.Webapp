@@ -19,7 +19,7 @@ using Microsoft.AspNetCore.Http;
 namespace ShopHeo.AdminApp.Controllers
 {
 
-    public class UserController : Controller
+    public class UserController : BaseController
     {
         private readonly IUserApiClient _userApiClient;
         private readonly IConfiguration _configuration;
@@ -29,89 +29,46 @@ namespace ShopHeo.AdminApp.Controllers
             _userApiClient = userApiClient;
             _configuration = configuration;
         }
-        public async Task<IActionResult> Index(string keyword, int pageIndex = 1, int pageSize = 10)
+        public async Task<IActionResult> Index(string keyword, int PageIndex = 1, int PageSize = 10)
         {
-            var sessions = HttpContext.Session.GetString("Home");
+            var sessions = HttpContext.Session.GetString("Token");
+
             var request = new GetUserPagingRequest()
             {
-                pageIndex = 1,
-                pageSize = 10,
-                BearerToken = sessions
+                BearerToken = sessions,
+                Keyword = keyword,
+                pageIndex = PageIndex,
+                pageSize = PageSize
             };
             var data = await _userApiClient.GetUserPagings(request);
             return View(data);
         }
 
         [HttpGet]
-        public async Task<IActionResult> Created()
+        public IActionResult Create()
         {          
             return View();
         }
 
+
         [HttpPost]
-        public async Task<IActionResult> Created(RegisterRequest register)
+        public async Task<IActionResult> Create(RegisterRequest request)
         {
             if (!ModelState.IsValid)
-                return View(ModelState);
-            var Result = await _userApiClient.RegisterUser(register);
-            if (Result)
-            {
-                TempData["result"] = "Thêm mới thành công";
+                return View();
+
+            var result = await _userApiClient.RegisterUser(request);
+            if (result)
                 return RedirectToAction("Index");
-            }
-            return View();
-        }
 
-        [HttpGet]
-        public async Task<IActionResult> Login()
-        {
-            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-            return View();
+            return View(request);
         }
-
         [HttpPost]
         public async Task<IActionResult> Logout()
         {
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            HttpContext.Session.Remove("Token");
             return RedirectToAction("Login", "User");
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> Login(LoginRequest request)
-        {
-            if (!ModelState.IsValid)
-                return View(ModelState);
-
-            var token = await _userApiClient.Authenticate(request);
-            var userPrincipal = ValidateToken(token);
-            var authProperties = new AuthenticationProperties
-            {
-                ExpiresUtc = DateTimeOffset.UtcNow.AddMinutes(10),
-                IsPersistent = false
-            };
-            HttpContext.Session.SetString("Home", token);
-            await HttpContext.SignInAsync(
-                      CookieAuthenticationDefaults.AuthenticationScheme,
-                      userPrincipal,
-                      authProperties);
-            return RedirectToAction("Index", "Home");
-        }
-        private ClaimsPrincipal ValidateToken(string jwtToken)
-        {
-            IdentityModelEventSource.ShowPII = true;
-
-            SecurityToken validatedToken;
-            TokenValidationParameters validationParameters = new TokenValidationParameters();
-
-            validationParameters.ValidateLifetime = true;
-
-            validationParameters.ValidAudience = _configuration["Tokens:Issuer"];
-            validationParameters.ValidIssuer = _configuration["Tokens:Issuer"];
-            validationParameters.IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Tokens:Key"]));
-
-            ClaimsPrincipal principal = new JwtSecurityTokenHandler().ValidateToken(jwtToken, validationParameters, out validatedToken);
-
-            return principal;
-        }
+        }     
     }
 }

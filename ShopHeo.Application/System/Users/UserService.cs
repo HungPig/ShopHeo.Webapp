@@ -95,6 +95,7 @@ namespace ShopHeo.Application.System.Users
 
         public async Task<bool> Register(RegisterRequest request)
         {
+
             var user = new AppUser()
             {
                 Dob = request.Dob,
