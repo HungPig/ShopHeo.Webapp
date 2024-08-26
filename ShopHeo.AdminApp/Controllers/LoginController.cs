@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
-using ShopHeo.ViewModels.CataLog.Users;
 using System;
 using Microsoft.Extensions.Configuration;
 using ShopHeo.AdminApp.Service;
@@ -12,6 +11,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using ShopHeo.ViewModels.System.Users;
 
 namespace ShopHeo.AdminApp.Controllers
 {
@@ -38,14 +38,14 @@ namespace ShopHeo.AdminApp.Controllers
             if (!ModelState.IsValid)
                 return View(ModelState);
 
-            var token = await _userApiClient.Authenticate(request);
-            var userPrincipal = ValidateToken(token);
+            var result = await _userApiClient.Authenticate(request);
+            var userPrincipal = ValidateToken(result.ResultObj);
             var authProperties = new AuthenticationProperties
             {
                 ExpiresUtc = DateTimeOffset.UtcNow.AddMinutes(10),
                 IsPersistent = false
             };
-            HttpContext.Session.SetString("Token", token);
+            HttpContext.Session.SetString("Token", result.ResultObj);
             await HttpContext.SignInAsync(
                       CookieAuthenticationDefaults.AuthenticationScheme,
                       userPrincipal,

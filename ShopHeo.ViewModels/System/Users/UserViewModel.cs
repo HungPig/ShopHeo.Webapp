@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
 
-namespace ShopHeo.ViewModels.CataLog.Users
+namespace ShopHeo.ViewModels.System.Users
 {
     public class UserViewModel
     {
@@ -17,8 +17,6 @@ namespace ShopHeo.ViewModels.CataLog.Users
 
 
         public string PhoneNumber { get; set; }
-
-
         public string UserName { get; set; }
 
         public string Email { get; set; }
