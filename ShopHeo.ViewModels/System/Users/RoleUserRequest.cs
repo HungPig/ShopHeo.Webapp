@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace ShopHeo.ViewModels.CataLog.Users
+namespace ShopHeo.ViewModels.System.Users
 {
     public class RoleUserRequest
     {

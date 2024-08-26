@@ -1,5 +1,6 @@
-﻿@using ShopHeo.ViewModels.Commom;
-@model PageResult<ShopHeo.ViewModels.CataLog.Users.UserViewModel>
+﻿@    using ShopHeo.ViewModels.Commom;
+    using ShopHeo.ViewModels.System.Users;
+@model PageResult<UserViewModel>
 
 @{
     ViewData["Title"] = "Index";
@@ -66,9 +67,9 @@
                                     @Html.DisplayFor(modelItem => item.Dob)
                                 </td>
                                 <td>
-                                    @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-                                    @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-                                    @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+                                    @Html.ActionLink("Edit", "Edit", new { id=item.Id}) |
+                                    @Html.ActionLink("Details", "Details", new {  id=item.Id }) |
+                                    @Html.ActionLink("Delete", "Delete", new {  id=item.Id })
                                 </td>
                             </tr>
                         }

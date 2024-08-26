@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using ShopHeo.AdminApp.Service;
-using ShopHeo.ViewModels.CataLog.Users;
 using System.Threading.Tasks;
 using System.Security.Claims;
 using System.Text;
@@ -15,6 +14,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
+using ShopHeo.ViewModels.System.Users;
 
 namespace ShopHeo.AdminApp.Controllers
 {
@@ -31,26 +31,26 @@ namespace ShopHeo.AdminApp.Controllers
         }
         public async Task<IActionResult> Index(string keyword, int PageIndex = 1, int PageSize = 10)
         {
-            var sessions = HttpContext.Session.GetString("Token");
-
             var request = new GetUserPagingRequest()
             {
-                BearerToken = sessions,
                 Keyword = keyword,
                 pageIndex = PageIndex,
                 pageSize = PageSize
             };
             var data = await _userApiClient.GetUserPagings(request);
-            return View(data);
+            return View(data.ResultObj);
         }
-
+        [HttpGet]
+        public async Task<IActionResult> Details()
+        {
+            var result = await _userApiClient.GetById(Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value));
+            return View(result.ResultObj);
+        }
         [HttpGet]
         public IActionResult Create()
         {          
             return View();
         }
-
-
         [HttpPost]
         public async Task<IActionResult> Create(RegisterRequest request)
         {
@@ -58,9 +58,44 @@ namespace ShopHeo.AdminApp.Controllers
                 return View();
 
             var result = await _userApiClient.RegisterUser(request);
-            if (result)
+            if (result.IsSuccessed)
                 return RedirectToAction("Index");
 
+            return View(request);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Edit(Guid id)
+        {
+            var result = await _userApiClient.GetById(id);
+            if (result.IsSuccessed)
+            {
+                var user = result.ResultObj;
+                var updateRequest = new UserUpdateRequest()
+                {
+                    Dob = user.Dob,
+                    Email = user.Email,
+                    FirstName = user.FirstName,
+                    LastName = user.LastName,
+                    PhoneNumber = user.PhoneNumber,
+                    Id = id
+                };
+                return View(updateRequest);
+            }
+            return RedirectToAction("Error", "Home");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Edit(UserUpdateRequest request)
+        {
+            if (!ModelState.IsValid)
+                return View();
+
+            var result = await _userApiClient.UpdateUser(request.Id, request);
+            if (result.IsSuccessed)
+                return RedirectToAction("Index");
+
+            ModelState.AddModelError("", result.Message);
             return View(request);
         }
         [HttpPost]

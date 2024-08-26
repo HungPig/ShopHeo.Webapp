@@ -19,7 +19,7 @@ using ShopHeo.Data.EF;
 using ShopHeo.Data.Entities;
 using ShopHeo.Untitiles.Constants;
 using ShopHeo.Untitiles.Exceptions;
-using ShopHeo.ViewModels.CataLog.Users;
+using ShopHeo.ViewModels.System.Users;
 using System;
 using System.Collections.Generic;
 using System.Linq;

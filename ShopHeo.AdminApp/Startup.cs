@@ -7,7 +7,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using ShopHeo.AdminApp.Service;
-using ShopHeo.ViewModels.CataLog.Users;
+using ShopHeo.ViewModels.System.Users;
 using System;
 using System.Collections.Generic;
 using System.Linq;

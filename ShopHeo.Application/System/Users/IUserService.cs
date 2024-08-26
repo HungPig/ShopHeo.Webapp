@@ -1,6 +1,5 @@
-﻿
-using ShopHeo.ViewModels.CataLog.Users;
-using ShopHeo.ViewModels.Commom;
+﻿using ShopHeo.ViewModels.Commom;
+using ShopHeo.ViewModels.System.Users;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -10,9 +9,10 @@ namespace ShopHeo.Application.System.User
 {
     public interface IUserService
     {
-        Task<string> Authencate(LoginRequest request);
-
-        Task<bool> Register(RegisterRequest request);
-        Task<PageResult<UserViewModel>> GetUsersPaging(GetUserPagingRequest request);
+        Task<ApiResult<string>> Authencate(LoginRequest request);
+        Task<ApiResult<bool>> Register(RegisterRequest request);
+        Task<ApiResult<bool>> Update(Guid id, UserUpdateRequest request);
+        Task<ApiResult<PageResult<UserViewModel>>> GetUsersPaging(GetUserPagingRequest request);
+        Task<ApiResult<UserViewModel>> GetById(Guid id);
     }
 }
