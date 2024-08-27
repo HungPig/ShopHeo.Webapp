@@ -106,6 +106,8 @@ namespace ShopHeo.Application.System.Users
             var pagedResult = new PageResult<UserViewModel>()
             {
                 TotalRecords = totalRow,
+                PageIndex = request.pageIndex,
+                PageSize = request.pageSize,
                 Items = data
             };
             return new ApiSuccessResult<PageResult<UserViewModel>>(pagedResult);
