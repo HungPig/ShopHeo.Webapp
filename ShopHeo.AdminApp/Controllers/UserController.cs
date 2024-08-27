@@ -29,7 +29,7 @@ namespace ShopHeo.AdminApp.Controllers
             _userApiClient = userApiClient;
             _configuration = configuration;
         }
-        public async Task<IActionResult> Index(string keyword, int PageIndex = 1, int PageSize = 10)
+        public async Task<IActionResult> Index(string keyword, int PageIndex = 1, int PageSize = 1)
         {
             var request = new GetUserPagingRequest()
             {
@@ -41,9 +41,9 @@ namespace ShopHeo.AdminApp.Controllers
             return View(data.ResultObj);
         }
         [HttpGet]
-        public async Task<IActionResult> Details()
+        public async Task<IActionResult> Details(Guid id)
         {
-            var result = await _userApiClient.GetById(Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value));
+            var result = await _userApiClient.GetById(id);
             return View(result.ResultObj);
         }
         [HttpGet]
