@@ -56,7 +56,7 @@ namespace ShopHeo.BackendAPI.Controllers
 
         //PUT: http://localhost/api/users/id
         [HttpPut("{id}")]
-        public async Task<IActionResult> Update(Guid id,[FromBody] UserUpdateRequest request)
+        public async Task<IActionResult> Update(Guid id, [FromBody] UserUpdateRequest request)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
@@ -82,6 +82,13 @@ namespace ShopHeo.BackendAPI.Controllers
         public async Task<IActionResult> GetById(Guid id)
         {
             var user = await _userService.GetById(id);
+            return Ok(user);
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(Guid id)
+        {
+            var user = await _userService.Delete(id);
             return Ok(user);
         }
     }

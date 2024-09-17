@@ -14,5 +14,6 @@ namespace ShopHeo.Application.System.User
         Task<ApiResult<bool>> Update(Guid id, UserUpdateRequest request);
         Task<ApiResult<PageResult<UserViewModel>>> GetUsersPaging(GetUserPagingRequest request);
         Task<ApiResult<UserViewModel>> GetById(Guid id);
+        Task<ApiResult<bool>> Delete(Guid Id);
     }
 }

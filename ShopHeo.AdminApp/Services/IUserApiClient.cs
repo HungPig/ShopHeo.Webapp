@@ -18,5 +18,7 @@ namespace ShopHeo.AdminApp.Service
         Task<ApiResult<bool>> UpdateUser(Guid id,UserUpdateRequest updateRequest);
 
         Task<ApiResult<UserViewModel>> GetById(Guid id);
+
+        Task<ApiResult<bool>> DeleteUser(Guid id);
     }
 }
