@@ -29,7 +29,7 @@ namespace ShopHeo.AdminApp.Controllers
             _userApiClient = userApiClient;
             _configuration = configuration;
         }
-        public async Task<IActionResult> Index(string keyword, int PageIndex = 1, int PageSize = 1)
+        public async Task<IActionResult> Index(string keyword, int PageIndex = 1, int PageSize = 3)
         {
             var request = new GetUserPagingRequest()
             {
@@ -38,6 +38,7 @@ namespace ShopHeo.AdminApp.Controllers
                 pageSize = PageSize
             };
             var data = await _userApiClient.GetUserPagings(request);
+            ViewBag.KeyWord = keyword;
             return View(data.ResultObj);
         }
         [HttpGet]
@@ -104,6 +105,30 @@ namespace ShopHeo.AdminApp.Controllers
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             HttpContext.Session.Remove("Token");
             return RedirectToAction("Login", "User");
-        }     
+        }
+
+        [HttpGet]
+        public IActionResult Delete(Guid id)
+        {
+            return View(new UserDeleteRequest()
+            {
+                Id = id
+            });
+
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Delete(UserDeleteRequest request)
+        {
+            if (!ModelState.IsValid)
+                return View();
+
+            var result = await _userApiClient.DeleteUser(request.Id);
+            if (result.IsSuccessed)
+                return RedirectToAction("Index");
+
+            ModelState.AddModelError("", result.Message);
+            return View(request);
+        }
     }
 }

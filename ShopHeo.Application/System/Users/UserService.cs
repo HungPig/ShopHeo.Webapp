@@ -29,16 +29,16 @@ namespace ShopHeo.Application.System.Users
             _signInManager = signInManager;
             _config = config;
         }
-
         public async Task<ApiResult<string>> Authencate(LoginRequest request)
         {
             var user = await _userManager.FindByNameAsync(request.UserName);
-            if (user == null) return null;
+            if (user == null)
+                return new ApiErrorResult<string>("Tài khoản không tồn tại");
 
             var result = await _signInManager.PasswordSignInAsync(user, request.Password, request.RememberMe, true);
             if (!result.Succeeded)
             {
-               return new ApiErrorResult<string>("Tài khoản hoặc mật khẩu không đúng");
+                return new ApiErrorResult<string>("Tài khoản hoặc mật khẩu không đúng");
             }
             var roles = await _userManager.GetRolesAsync(user);
             var claims = new[]
@@ -57,6 +57,21 @@ namespace ShopHeo.Application.System.Users
                 expires: DateTime.Now.AddHours(3),
                 signingCredentials: creds);
             return new ApiSuccessResult<string>(new JwtSecurityTokenHandler().WriteToken(token));
+        }
+
+        public async Task<ApiResult<bool>> Delete(Guid Id)
+        {
+            var user = await _userManager.FindByIdAsync(Id.ToString());
+            if (user == null)
+            {
+                return new ApiErrorResult<bool>("Tài khoản Không tồn tại");
+            }
+            var result = await _userManager.DeleteAsync(user);
+            if (result.Succeeded)
+            {
+                return new ApiSuccessResult<bool>();
+            }
+            return new ApiErrorResult<bool>("Xoa không thành công");
         }
 
         public async Task<ApiResult<UserViewModel>> GetById(Guid id)
@@ -116,11 +131,11 @@ namespace ShopHeo.Application.System.Users
         public async Task<ApiResult<bool>> Register(RegisterRequest request)
         {
             var user = await _userManager.FindByNameAsync(request.UserName);
-            if(user != null)
+            if (user != null)
             {
                 return new ApiErrorResult<bool>("Tài khoản đã tồn tại");
             }
-            if(await _userManager.FindByEmailAsync(request.Email) != null)
+            if (await _userManager.FindByEmailAsync(request.Email) != null)
             {
                 return new ApiErrorResult<bool>("Email Đã Tồn Tại");
             }
